@@ -4,6 +4,7 @@ from django.contrib import admin
 # Register your models here.
 from .models import Post, Comment, Category
 
+
 class CommentItemInline(admin.TabularInline):
     model = Comment
     raw_id_fields = ['post']
@@ -28,10 +29,3 @@ class CommentAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
-
-
-
-
-
-
-
