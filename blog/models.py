@@ -1,7 +1,7 @@
 from django.db import models
 
 
-# Create your models here.
+# New seccion of the code added (To get All URL Generated).
 class Category(models.Model):
     title = models.CharField(max_length=255)
 
@@ -9,21 +9,22 @@ class Category(models.Model):
     class Meta:
         ordering = ('title',)
         verbose_name_plural = 'Categories'
-
-
+   
     def __str__(self):
         return self.title
    
+
+
 class Post(models.Model):
 
 
-    ACTIVATE = 'activate'
+    ACTIVE = 'active'
     DRAFT = 'draft'
 
 
     CHOICES_STATUS = {
-        (ACTIVATE, 'activate'),
-        (DRAFT, 'draft')
+        (ACTIVE, 'Active'),
+        (DRAFT, 'Draft')
     }
 
 
@@ -32,15 +33,20 @@ class Post(models.Model):
     intro = models.TextField()
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=10, choices=CHOICES_STATUS, default=ACTIVATE)
+    status = models.CharField(max_length=10, choices=CHOICES_STATUS, default=ACTIVE)
     image = models.ImageField(upload_to='upload/', blank=True, null=True)
 
 
     def __str__(self):
         return self.title
-   
+
+
+    def get_absolute_url(self):
+        return '/%s/%s/' % (self.category.slug, self.slug)
+
+
 class Comment(models.Model):
-    post = models.ForeignKey(Post, related_name='posts', on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     email = models.EmailField()
     body = models.TextField()
@@ -49,3 +55,4 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.name
+
